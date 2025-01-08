@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Service/Dockerfile
+    container_name: ner_backend
+    volumes:
+      - ./:/app
+    ports:
+      - "8000:8000"
+    networks:
+      - ner_net
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Frontend/Dockerfile
+    container_name: ner_frontend
+    ports:
+      - "3000:80"
+    networks:
+      - ner_net
+
+networks:
+  ner_net:
+    driver: bridge

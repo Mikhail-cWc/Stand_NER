@@ -1,0 +1,115 @@
+.app-container {
+    max-width: 800px;
+    margin: 0 auto; 
+    font-family: Arial, sans-serif;
+    color: #333;
+  }
+  
+  header {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 30px;
+  }
+  
+  header h1 {
+    font-size: 2rem;
+  }
+  
+  footer {
+    text-align: center;
+    margin-top: 30px;
+    color: #777;
+    font-size: 0.9rem;
+  }
+  
+  .input-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .form-group textarea,
+  .form-group select {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: none;
+  }
+  
+  .submit-button {
+    padding: 10px 20px;
+    background-color: #0a84ff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .submit-button:disabled {
+    background-color: #a0c8ff;
+    cursor: not-allowed;
+  }
+  
+  .error-message {
+    color: #d62828;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .results-section {
+    margin-bottom: 30px;
+  }
+  
+  .results-section h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+  
+  .no-entities {
+    font-style: italic;
+    color: #777;
+  }
+  
+  .entities-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+  }
+  
+  .entity-card {
+    background-color: #f9f9f9;
+    border-left: 4px solid #0a84ff;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  
+  .entity-type {
+    display: inline-block;
+    font-weight: bold;
+    color: #0a84ff;
+    margin-bottom: 5px;
+  }
+  
+  .entity-text {
+    margin: 5px 0;
+    font-size: 1rem;
+    color: #333;
+  }
+  
+  .entity-offset {
+    font-size: 0.85rem;
+    color: #666;
+  }

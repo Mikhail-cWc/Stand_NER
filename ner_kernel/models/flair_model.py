@@ -6,9 +6,9 @@ from .abstract_model import BaseNERModel
 
 
 class FlairNERModel(BaseNERModel):
-    def __init__(self, model_path: str = "ner-fast"):
+    def __init__(self, model_name: str = "ner-fast"):
         # Можно указать "ner", "ner-fast", "ner-ontonotes-fast" и т.п.
-        self.tagger = SequenceTagger.load(model_path)
+        self.tagger = SequenceTagger.load(model_name)
 
     def predict_entities(self, text: str) -> List[Entity]:
         sentence = Sentence(text)

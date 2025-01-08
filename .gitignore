@@ -2,3 +2,4 @@
 .venv
 *NOTES*
 data
+*node_modules*
