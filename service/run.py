@@ -18,7 +18,11 @@ model_registry = {
     "flair": FlairNERModel(model_name="ner-fast")
 }
 
-origins = ["http://localhost:3001", "http://127.0.0.1:3001"]
+origins = [
+    "http://localhost:3000", "http://127.0.0.1:3000", 
+    "http://localhost:80", "http://127.0.0.1:80", 
+    "http://213.171.27.97:3000", "http://213.171.27.97:80"
+]
 
 app.add_middleware(
     CORSMiddleware,

@@ -15,7 +15,7 @@ function App() {
     setLoading(true);
 
     try {
-      const response = await axios.post("http://localhost:8000/predict", {
+      const response = await axios.post("http://213.171.27.97:8000/predict", {
         text: text,
         model_name: modelName
       });
