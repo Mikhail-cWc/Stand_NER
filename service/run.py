@@ -4,7 +4,7 @@ from typing import List
 
 from ner_kernel import SpacyNERModel, HFNERModel, BaseNERModel, FlairNERModel
 from ner_kernel import Entity
-from classes import NERResponse, EntityResponse, NERRequest
+from .classes import NERResponse, EntityResponse, NERRequest
 
 app = FastAPI(
     title="NER Service",
