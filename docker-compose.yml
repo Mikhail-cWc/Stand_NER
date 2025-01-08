@@ -4,7 +4,7 @@ services:
   backend:
     build:
       context: .
-      dockerfile: Service/Dockerfile
+      dockerfile: Dockerfile-service
     container_name: ner_backend
     volumes:
       - ./:/app
@@ -16,7 +16,7 @@ services:
   frontend:
     build:
       context: .
-      dockerfile: Frontend/Dockerfile
+      dockerfile: Dockerfile-site
     container_name: ner_frontend
     ports:
       - "3000:80"
