@@ -33,7 +33,7 @@ function App() {
   return (
     <div className="app-container">
       <header>
-        <h1>NER Demo</h1>
+        <h1>NER Stand</h1>
       </header>
 
       <main>
