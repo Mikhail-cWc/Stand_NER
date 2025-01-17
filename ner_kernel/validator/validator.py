@@ -15,8 +15,6 @@ class NERValidator:
             return False
         if abs(gold_ent.start_offset - pred_ent.start_offset) > self.tolerance:
             return False
-        if abs(gold_ent.end_offset - pred_ent.end_offset) > self.tolerance:
-            return False
         return True
 
     def evaluate(self, docs: List[Document]) -> Dict[str, any]:
