@@ -23,7 +23,7 @@ function App() {
     setLoading(true);
 
     try {
-      const response = await axios.post("http://localhost:8000/predict", {
+      const response = await axios.post("http://213.171.27.97:8000/predict", {
         text: text,
         framework: FrameworkName,
         model_name: ModelName
@@ -42,7 +42,7 @@ function App() {
   return (
     <div className="app-container">
       <header>
-        <h1>NER Demo</h1>
+        <h1>NER Stand</h1>
       </header>
 
       <main>
