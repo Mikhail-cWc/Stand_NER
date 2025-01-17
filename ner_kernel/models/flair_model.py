@@ -8,6 +8,7 @@ from .abstract_model import BaseNERModel
 class FlairNERModel(BaseNERModel):
     def __init__(self, model_name: str = "ner-fast"):
         # Можно указать "ner", "ner-fast", "ner-ontonotes-fast" и т.п.
+        self.model_name = "ner-fast"
         self.tagger = SequenceTagger.load(model_name)
 
     def predict_entities(self, text: str) -> List[Entity]:
@@ -24,3 +25,7 @@ class FlairNERModel(BaseNERModel):
             )
             result_entities.append(e)
         return result_entities
+
+    def change_model(self, model_name: str):
+        if self.model_name != model_name:
+            self.tagger = SequenceTagger.load(model_name)

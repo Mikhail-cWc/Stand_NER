@@ -12,3 +12,7 @@ class BaseNERModel(ABC):
         predicted = self.predict_entities(doc.plaintext)
         doc.pred_markup = predicted
         return doc
+
+    @abstractmethod
+    def change_model(self, model_name: str):
+        pass

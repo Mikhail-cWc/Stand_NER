@@ -4,7 +4,8 @@ from typing import List
 
 class NERRequest(BaseModel):
     text: str
-    model_name: str = "spacy"
+    framework: str = "spacy"
+    model_name: str = "ru_core_news_sm"
 
 
 class EntityResponse(BaseModel):

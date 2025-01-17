@@ -4,10 +4,18 @@ import './App.css';
 
 function App() {
   const [text, setText] = useState("");
-  const [modelName, setModelName] = useState("spacy");
+  const [FrameworkName, setFrameworkName] = useState("spacy");
+  const [ModelName, setModelName] = useState("ru_core_news_sm");
   const [entities, setEntities] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
+
+  const modelOptions = {
+    spacy: ["ru_core_news_sm", "en_core_web_sm", "en_core_web_trf"],
+    hf: ["bert-base-multilingual-cased", "bert-base-russian-cased"],
+    flair: ["ner-fast", "ner-english-fast"]
+  };
 
   const handleSubmit = async () => {
     setError("");
@@ -17,7 +25,8 @@ function App() {
     try {
       const response = await axios.post("http://localhost:8000/predict", {
         text: text,
-        model_name: modelName
+        framework: FrameworkName,
+        model_name: ModelName
       });
       if (response.data && response.data.entities) {
         setEntities(response.data.entities);
@@ -49,12 +58,38 @@ function App() {
           </div>
 
           <div className="form-group">
-            <label>Выберите модель:</label>
-            <select value={modelName} onChange={(e) => setModelName(e.target.value)}>
+            <label>Выберите фреймворк:</label>
+            <select
+              value={FrameworkName}
+              onChange={(e) => {
+                setFrameworkName(e.target.value);
+                // При переключении фреймворка можно сразу же
+                // подставить дефолтное значение модели, если нужно:
+                // setModelName(modelOptions[e.target.value][0]);
+              }}
+            >
               <option value="spacy">spaCy (ru_core_news_sm)</option>
               <option value="hf">HuggingFace (BERT)</option>
               <option value="flair">Flair (NER-fast)</option>
             </select>
+          </div>
+
+          <div className="form-group">
+            <label>Название модели:</label>
+            <input
+              type="text"
+              value={ModelName}
+              onChange={(e) => setModelName(e.target.value)}
+              onMouseEnter={() => setShowTooltip(true)}
+              onMouseLeave={() => setShowTooltip(false)}
+              placeholder="Введите название модели..."
+            />
+            {showTooltip && (
+              <div className="tooltip">
+                Доступно для {FrameworkName}:
+                {" " + (modelOptions[FrameworkName] || []).join(", ")}
+              </div>
+            )}
           </div>
 
           <button
