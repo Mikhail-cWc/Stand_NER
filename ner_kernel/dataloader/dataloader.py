@@ -1,11 +1,17 @@
-from typing import List, Optional, Dict
 import os
 import json
+from typing import List, Optional, Dict
+
 from bs4 import BeautifulSoup
+
+from .base_parser import FileParser
+from .text_parser import TextParser
+from .html_parser import HtmlParser
 from ..instance import Entity, Document
 
 
 class DataLoader:
+
     def __init__(
         self,
         path_to_files: Optional[str] = None,
@@ -14,14 +20,22 @@ class DataLoader:
         self.path_to_files = path_to_files
         self.path_to_markups = path_to_markups
 
+        self.parsers = {
+            '.txt': TextParser,
+            '.html': HtmlParser
+        }
+
     def run(self, texts: Optional[List[str]] = None, gold_markups: Optional[List[List[Entity]]] = None) -> List[Document]:
         documents = []
 
+        # Case 1: Process in-memory texts
         if texts:
-            if texts and gold_markups and len(texts) != len(gold_markups):
+            if gold_markups and len(texts) != len(gold_markups):
                 raise ValueError("Количество текстов и количество gold_markups не совпадают.")
-            elif texts and not gold_markups:
-                gold_markups = [None]*len(texts)
+
+            if not gold_markups:
+                gold_markups = [None] * len(texts)
+
             for idx, (raw_text, gold_markup) in enumerate(zip(texts, gold_markups)):
                 doc = self._create_document(
                     name=f"in-memory-doc-{idx}",
@@ -30,50 +44,29 @@ class DataLoader:
                 )
                 documents.append(doc)
 
+        # Case 2: Process files from directory
         elif self.path_to_files:
             for filename in os.listdir(self.path_to_files):
                 full_path = os.path.join(self.path_to_files, filename)
 
-                if os.path.isfile(full_path):
-                    if filename.lower().endswith('.html'):
-                        with open(full_path, 'r', encoding='utf-8') as f:
-                            raw_html = f.read()
+                if not os.path.isfile(full_path):
+                    continue
 
-                        gold_markup = []
-                        soup = BeautifulSoup(raw_html, "html.parser")
-                        clean_text = soup.get_text()
+                _, ext = os.path.splitext(filename)
+                ext = ext.lower()
 
-                        if self.path_to_markups:
-                            gold = self._load_gold_markup(filename)
-                            gold_markup = gold
+                if ext not in self.parsers:
+                    continue
 
-                        doc = self._create_document(
-                            name=filename,
-                            text=raw_html,
-                            plaintext=clean_text,
-                            gold_markup=gold_markup,
-                            metadata={"source_type": "html"}
-                        )
-                        documents.append(doc)
+                with open(full_path, 'r', encoding='utf-8') as f:
+                    content = f.read()
 
-                    elif filename.lower().endswith('.txt'):
-                        with open(full_path, 'r', encoding='utf-8') as f:
-                            raw_text = f.read()
-                            gold_markup = []
-                            if self.path_to_markups:
-                                gold = self._load_gold_markup(filename)
-                                gold_markup = gold
-                            doc = self._create_document(
-                                name=filename,
-                                text=raw_text,
-                                gold_markup=gold_markup,
-                                metadata={"source_type": "txt"}
-                            )
+                gold_markup = []
+                if self.path_to_markups:
+                    gold_markup = self._load_gold_markup(filename)
 
-                        documents.append(doc)
-                    else:
-                        continue
-
+                doc = self.parsers[ext].parse_file(filename, content, gold_markup)
+                documents.append(doc)
         return documents
 
     def _load_gold_markup(self, filename: str) -> List[Entity]:
@@ -84,11 +77,6 @@ class DataLoader:
         if os.path.isfile(json_path):
             with open(json_path, 'r', encoding='utf-8') as f:
                 data = json.load(f)
-                # data ожидается списком словарей вида:
-                # [
-                #   {"entity": "PERSON", "start_offset": 0, "end_offset": 9, "text": "Илон Маск"},
-                #   ...
-                # ]
                 entities = []
                 for item in data:
                     entity_obj = Entity(

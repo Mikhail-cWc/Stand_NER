@@ -2,5 +2,7 @@
 .venv
 *NOTES*
 data
+benchmarks
 *node_modules*
 *build*
+result*
