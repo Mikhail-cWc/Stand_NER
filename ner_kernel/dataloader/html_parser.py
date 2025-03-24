@@ -1,5 +1,7 @@
 from typing import List, Optional
 
+from bs4 import BeautifulSoup
+
 from .base_parser import FileParser
 from ..instance import Entity, Document
 
@@ -13,7 +15,7 @@ class HtmlParser(FileParser):
         return Document(
             name=filename,
             text=content,
-            plaintext=clean_text,
+            plaintext=clean_text.replace("\n", "").replace("Document", ""),
             gold_markup=gold_markup or [],
             metadata={"source_type": "html"}
         )

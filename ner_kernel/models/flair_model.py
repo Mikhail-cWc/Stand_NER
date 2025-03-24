@@ -2,7 +2,7 @@ from flair.data import Sentence
 from flair.models import SequenceTagger
 from typing import List
 from ..instance import Document, Entity
-from .abstract_model import BaseNERModel
+from .base_model import BaseNERModel
 
 
 class FlairNERModel(BaseNERModel):

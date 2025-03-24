@@ -15,14 +15,17 @@ class DataLoader:
     def __init__(
         self,
         path_to_files: Optional[str] = None,
-        path_to_markups: Optional[str] = None
+        path_to_markups: Optional[str] = None,
+        language: Optional[str] = "russian",
+        stop_words: Optional[List[str]] = None
     ):
         self.path_to_files = path_to_files
         self.path_to_markups = path_to_markups
+        self.stop_words = stop_words
 
         self.parsers = {
-            '.txt': TextParser,
-            '.html': HtmlParser
+            '.txt': TextParser(stop_words, language),
+            '.html': HtmlParser()
         }
 
     def run(self, texts: Optional[List[str]] = None, gold_markups: Optional[List[List[Entity]]] = None) -> List[Document]:

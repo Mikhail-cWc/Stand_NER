@@ -1,7 +1,7 @@
 from transformers import AutoTokenizer, AutoModelForTokenClassification, pipeline
 from typing import List
 from ..instance import Document, Entity
-from .abstract_model import BaseNERModel
+from .base_model import BaseNERModel
 
 
 class HFNERModel(BaseNERModel):

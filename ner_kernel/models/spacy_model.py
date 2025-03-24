@@ -5,15 +5,15 @@ import logging
 
 from typing import List
 from ..instance import Document, Entity
-from .abstract_model import BaseNERModel
+from .base_model import BaseNERModel
 from ..logger import logger
 
 
 class SpacyNERModel(BaseNERModel):
-    def __init__(self, model_name: str = "ru_core_news_sm"):
+    def __init__(self, model_name: str = "ru_core_news_sm", **kwargs):
         self.model_name = model_name
         self._ensure_model_installed(model_name)
-        self.nlp = spacy.load(model_name)
+        self.nlp = spacy.load(model_name, **kwargs)
 
     def _ensure_model_installed(self, model_name: str):
         try:

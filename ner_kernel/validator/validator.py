@@ -68,7 +68,8 @@ class NERValidator:
         precision, recall, f1, _ = precision_recall_fscore_support(
             y_true, y_pred, average='binary', zero_division=0
         )
-
+        if len(y_true) == len(y_pred) == 0:
+            precision, recall, f1 = 1, 1, 1
         return {
             "precision": precision,
             "recall": recall,
