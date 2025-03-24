@@ -4,11 +4,12 @@ from ..models import BaseNERModel
 from ..validator import NERValidator
 from ..standardizer import LabelStandardizer
 
+
 class Pipeline:
     def __init__(
         self,
         model: BaseNERModel,
-        standardizer: LabelStandardizer,
+        standardizer: Optional[LabelStandardizer] = None,
         validator: Optional[NERValidator] = None,
         dataset_name: Optional[str] = None
     ):
@@ -18,11 +19,11 @@ class Pipeline:
         self.dataset_name = dataset_name
 
     def run(self, documents: List[Document]) -> List[Document]:
-        if self.dataset_name:
+        if self.standardizer and self.dataset_name:
             documents = self._standardize_input(documents)
-        
+
         processed_docs = [self.model.predict_document(doc) for doc in documents]
-        if self.standardizer.model_mappings[self.model.model_name]:
+        if self.standardizer and self.standardizer.model_mappings[self.model.model_name]:
             processed_docs = self._standardize_output(processed_docs)
         return processed_docs
 
@@ -72,7 +73,7 @@ class Pipeline:
 
     def validate(self, documents: List[Document]) -> Dict[str, float]:
         if not self.validator:
-            raise ValueError("Валидатор не определен")   
+            raise ValueError("Валидатор не определен")
         return self.validator.evaluate(documents)
 
     def update_mappings(
