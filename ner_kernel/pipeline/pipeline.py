@@ -3,6 +3,7 @@ from ..instance import Document, Entity
 from ..models import BaseNERModel
 from ..validator import NERValidator
 from ..standardizer import LabelStandardizer
+from ..utils.resource_logger import log_resources
 
 
 class Pipeline:
@@ -20,6 +21,7 @@ class Pipeline:
         self.dataset_name = dataset_name
         self.long_text = long_text
 
+    @log_resources
     def run(self, documents: List[Document]) -> List[Document]:
         if self.standardizer and self.dataset_name:
             documents = self._standardize_input(documents)
@@ -39,7 +41,8 @@ class Pipeline:
                             pred_markup=[],
                             metadata=doc.metadata
                         )
-                        processed_temp_doc = self.model.predict_document(temp_doc)
+                        processed_temp_doc = self.model.predict_document(
+                            temp_doc)
                         for ent in processed_temp_doc.pred_markup:
                             ent.start_offset += current_offset
                             ent.end_offset += current_offset
@@ -47,7 +50,8 @@ class Pipeline:
                         current_offset += len(sentence) + 3
                 processed_docs.append(doc)
         else:
-            processed_docs = [self.model.predict_document(doc) for doc in documents]
+            processed_docs = [self.model.predict_document(
+                doc) for doc in documents]
 
         if self.standardizer and self.standardizer.model_mappings[self.model.model_name]:
             processed_docs = self._standardize_output(processed_docs)

@@ -5,6 +5,7 @@ from ..instance import Document, Entity
 
 
 class BaseNERModel(ABC):
+    # Base class for all NER models
     def __init__(self):
         self.model_name = "Base"
         self.entity_label = "MISC"

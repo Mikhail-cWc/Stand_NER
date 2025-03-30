@@ -5,10 +5,12 @@ from .base_model import BaseNERModel
 
 
 class HFNERModel(BaseNERModel):
+    # Transformer model from Hugging Face
     def __init__(self, model_name: str = "dslim/bert-base-NER"):
         self.model_name = "dslim/bert-base-NER"
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
-        self.model = AutoModelForTokenClassification.from_pretrained(model_name)
+        self.model = AutoModelForTokenClassification.from_pretrained(
+            model_name)
         self.ner_pipeline = pipeline(
             "ner", model=self.model,
             tokenizer=self.tokenizer, aggregation_strategy="simple"
@@ -33,7 +35,8 @@ class HFNERModel(BaseNERModel):
         if self.model_name != model_name:
             self.model_name = model_name
             self.tokenizer = AutoTokenizer.from_pretrained(model_name)
-            self.model = AutoModelForTokenClassification.from_pretrained(model_name)
+            self.model = AutoModelForTokenClassification.from_pretrained(
+                model_name)
             self.ner_pipeline = pipeline(
                 "ner", model=self.model,
                 tokenizer=self.tokenizer, aggregation_strategy="simple"

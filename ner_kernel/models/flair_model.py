@@ -6,10 +6,11 @@ from .base_model import BaseNERModel
 
 
 class FlairNERModel(BaseNERModel):
+    # BiLSTM + CRF
     def __init__(self, model_name: str = "ner-fast"):
         # Можно указать "ner", "ner-fast", "ner-ontonotes-fast" и т.п.
         self.model_name = "ner-fast"
-        self.tagger = SequenceTagger.load(model_name)
+        self.tagger = SequenceTagger.load(model_name, weights_only=False)
 
     def predict_entities(self, text: str) -> List[Entity]:
         sentence = Sentence(text)

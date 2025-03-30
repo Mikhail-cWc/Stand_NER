@@ -6,3 +6,6 @@ benchmarks
 *node_modules*
 *build*
 result*
+*.code-workspace
+.cursorignore
+.DS_Store
